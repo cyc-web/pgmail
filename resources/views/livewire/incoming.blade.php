@@ -170,5 +170,4 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 
