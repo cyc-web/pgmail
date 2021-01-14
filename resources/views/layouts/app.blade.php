@@ -16,19 +16,19 @@
          <link rel="stylesheet" href="{{asset('style.css')}}">
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         
-        <script src="{{asset('js/app.js')}}"></script>
+        
          <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
 
          <livewire:styles />
-         <livewire:scripts />
+         
     </head>
-    <body style="background-color: whitesmoke;">
+    <body style="background-color: whitesmoke;" class="hold-transition sidebar-mini">
            
 <div>
     @yield('content')
 </div>
-
-<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+<livewire:scripts />
+<script src="{{asset('js/app.js')}}"></script>
 <!-- Bootstrap 4 -->
 
 <script src="{{asset('dist/js/adminlte.min.js')}}"></script>

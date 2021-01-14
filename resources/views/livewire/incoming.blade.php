@@ -1,6 +1,5 @@
 
 
-<body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -171,9 +170,5 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-<!-- ./wrapper -->
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 
-<!-- jQuery -->
-
-</body>
-</html>

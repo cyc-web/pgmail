@@ -1,12 +1,4 @@
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>PGC MAIL</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
- 
-</head>
 <livewire:navbar />
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -141,5 +133,5 @@
 </div>
 <!-- ./wrapper -->
 
-</body>
-</html>
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+

@@ -189,4 +189,5 @@ CKEDITOR.replace('my-editor').on('change', function(e){
 @this.set('description', e.editor.getData());
 });
 </script>
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
 

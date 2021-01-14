@@ -1,6 +1,5 @@
 
 
-<body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
   <livewire:navbar />
@@ -173,5 +172,5 @@ CKEDITOR.replace('my-editor').on('change', function(e){
 @this.set('description', e.editor.getData());
 });
 </script>
-</body>
-</html>
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>
+

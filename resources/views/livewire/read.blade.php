@@ -1,14 +1,5 @@
 
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>PGC MAIL</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  
-</head>
-<body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
   <livewire:navbar />
@@ -200,5 +191,4 @@
 </div>
 <!-- ./wrapper -->
 
-</body>
-</html>
+<script src="{{asset('plugins/jquery/jquery.min.js')}}"></script>

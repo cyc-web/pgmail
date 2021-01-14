@@ -47,7 +47,8 @@ class Message extends Component
             
             $this->code = substr(str_shuffle($message->subject), 0, 5).rand(00000, 99999);
             Db::table('messages')->where('id', $message->id)->update(['code' => $this->code]);
-            foreach ($this->photos as $photo) {
+            if($this->photos){
+                foreach ($this->photos as $photo) {
              $path =date("Ymd_His") . '-' . $photo->getClientOriginalName();
              $photo->storeAs('public', $path);
              Db::table('attachments')->insert([
@@ -58,6 +59,8 @@ class Message extends Component
             
         
             }
+            }
+            
             session()->flash('message', 'Message sent successfully');
            return redirect(route('inbox'));
            
