@@ -148,22 +148,41 @@
                     @endforeach
                     @endif
                 <br>
-                <div class="row">
-                    <div x-data="{ open: false }">
-                        <button class="btn btn-default" @click="open = true">Reply <i class="fas fa-reply"></i> </button>
-                    
-                        <div x-show="open" @click.away="open = false">
-                          <br>
-                            <livewire:reply />
-                        </div>
-                    </div>
+                
+                   <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Reply
+                  </button>
 
+                  <!-- Modal -->
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group" wire:ignore>
+                              <label for="">Description <span class="text-danger"></span></label>
+                              <textarea id="my-editor" wire:model="description" name="content" class="form-control"></textarea>
+                            
+                            </div>     
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                    
                 </div>
           
 
 
-            </div>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
@@ -191,3 +210,17 @@
 </div>
 <!-- ./wrapper -->
 
+<script src="//cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
+<script>
+  var options = {
+    filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+    filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+    filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+    filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+  };
+</script>
+<script>
+CKEDITOR.replace('my-editor').on('change', function(e){
+@this.set('description', e.editor.getData());
+});
+</script>

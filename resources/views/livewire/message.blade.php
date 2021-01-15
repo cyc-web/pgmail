@@ -93,7 +93,7 @@
              @endif
              
             </div>
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-success" wire:offline.attr="disabled">
               <div wire:loading wire:target="addNewMessage">
                             <i class="fas fa-spinner fa-spin"></i>
                             Sending message...

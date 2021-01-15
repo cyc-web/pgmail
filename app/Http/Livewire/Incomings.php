@@ -2,16 +2,23 @@
 
 namespace App\Http\Livewire;
 
+use App\Feedback;
 use App\Message;
 use App\Recipent;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Incomings extends Component
 {
-   private $messageId;
+    use WithPagination;
+
+
+    public $search = '';
+
+    private $messageId;
     private $users;
     private $user;
     private $messages;
@@ -37,17 +44,6 @@ class Incomings extends Component
 
     
 
-    public function mount()
-    {
-        $this->users = Db::table('feedbacks')->orderBy('id', 'desc')->get();
-       
-    }
-    public function archive($messageId)
-    {
-        Recipent::where(['message_id' => $messageId, 'user_id' => Auth::user()->id])->update(['message_status' => 2]);
-        return $this->mount();
-
-    }
 
     public function remove($messageId)
     {
@@ -57,6 +53,6 @@ class Incomings extends Component
     }
     public function render()
     {
-        return view('livewire.incomings', ['users'=> $this->users]);
+        return view('livewire.incomings', ['users'=> Feedback::latest()->paginate(2)]);
     }
 }
