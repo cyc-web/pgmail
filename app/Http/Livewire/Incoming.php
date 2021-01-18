@@ -30,25 +30,18 @@ class Incoming extends Component
     private $owner;
 
 
-   public function getMessageId()
+   
+
+    public function remove($id)
     {
-        # code...
-        $this->messageId = Recipent::where('user_id', Auth::user()->id)->get();
+        $this->role =Auth::user()->role_id;
+        if ($this->role === 1 || $this->role ===2) {
+            User::where('id', $id)->delete();
+            session()->flash('message', 'User deleted successfully');
+        }else{
+            session()->flash('message', 'You have no right to delete users');
+        }
         
-    }
-    public function getSender($messageId)
-    {
-        # code...
-        $this->messageId = Message::where('id', $messageId);
-    }
-
-    
-
-
-    public function remove($messageId)
-    {
-        Recipent::where(['message_id' => $messageId, 'user_id' => Auth::user()->id])->delete();
-       return $this->mount();
 
     }
 
@@ -62,6 +55,7 @@ class Incoming extends Component
     }
     public function render()
     {
-        return view('livewire.incoming', ['users'=> Feedback::latest()->paginate(2)]);
+       
+        return view('livewire.incoming', ['users'=> User::withTrashed()->where('id', '!=', auth::user()->id)->where('role_id', '!=', 1)->paginate(2)]);
     }
 }

@@ -62,8 +62,8 @@
                @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
               <li class="nav-item">
                 <a href="/incoming" class="nav-link">
-                  <i class="fas fa-file-import nav-icon"></i>
-                  <p>Incoming Request</p>
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>All Users</p>
                 </a>
               </li>
               @endif
@@ -90,9 +90,8 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-              @foreach($messages as $message)
-                @endforeach 
-            <h1>{{$message->subject}} : {{$message->owner}}</h1>
+             
+            <h1>{{$mcode->subject}}</h1>
           </div>
           
         </div>
@@ -107,78 +106,107 @@
           <!-- /.card -->
 
           <div class="card">
-            <div class="card-header">
+            <div class="card-header" style="text-align: right;">
+              <!-- Button trigger modal -->
+                  <button type="button" class="btn btn-default" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                   <div class="fas fa-reply"></div> Reply
+                  </button>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" wire:ignore>
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <strong>From : {{$message->name}} {{$message->othername}}</strong>
+                        <strong>From : {{$sender->name}} {{$sender->othername}} </strong>
                     </div>
                     <div class="col-md-6" style="text-align: right;">
-                         {{$message->created_at}} ({{ \Carbon\Carbon::parse($message->created_at)->diffForHumans() }})
+                        {{$mcode->created_at}} ({{ \Carbon\Carbon::parse($mcode->created_at)->diffForHumans() }})
                     </div>
 
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <p>To :
-                        @foreach($recipents as $recipent)
-                        @if($recipent->rname === Auth::user()->name && $recipent->rothername === Auth::user()->othername)
+                        @foreach($recipents as $user)
+                        @if($user->fname === $userName && $user->oname === $userOtherName)
                         me,
                         @else
-                        {{$recipent->rname}} {{$recipent->rothername}},
-                        @endif
+                        {{$user->fname}} {{$user->oname}},
+                       @endif
                         @endforeach
+                        
                         </p>
                     </div>
                 </div>
+                @foreach($results as $result)
                 <div class="row" style="padding: 10px;">
-                    {!! $message->description !!}
-                </div>
-                
-                     @if($attachments)
-                     @foreach($attachments as $image)
-                     <div class="row">
-                    <div class="col-md-6">
-                      <a href="/{{'storage/'.$image->attachment}}" class="text-success" download="Attachment"><i class="fas fa-paperclip"></i> download</a>&nbsp;&nbsp; <a href="/{{'storage/'.$image->attachment}}" target="_blank"><i class="fas fa-edit"></i> preview</a>
+                <div class="col-md-8">
+                  {!! $result->description !!}
+                   By : @if($result->rname === $userName && $result->roname === $userOtherName)
+                   Me 
+                   @else
+                   {{$result->rname}} {{$result->roname}}
+                   @endif
+                   @if($result->attachments)
+                   @foreach($result->attachments as $image)
+                   <div class="row" style="padding: 10px;">
+                    <div class="col-md-8">
+                        <a href="/{{'storage/'.$image->attachment}}" class="text-success" download="Attachment"><i class="fas fa-paperclip"></i> download</a>&nbsp;&nbsp; <a href="/{{'storage/'.$image->attachment}}" target="_blank"><i class="fas fa-edit"></i> preview</a>
                     </div>
-                     </div>
-                    @endforeach
-                    @endif
+                   </div>
+                   @endforeach
+                   @endif
+                </div>
+                <div class="col-md-4">
+                {{$result->created_at}} ({{ \Carbon\Carbon::parse($result->created_at)->diffForHumans() }})
+                </div>
+                <hr>
+                </div>
+                 @endforeach
+                
+                    
+                   
                 <br>
                 
-                   <!-- Button trigger modal -->
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Reply
-                  </button>
+                 
+                 
 
                   <!-- Modal -->
-                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" wire:ignore>
+                  <form wire:submit.prevent="reply" enctype="multipart/form-data">
+
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Reply</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                          <form>
-                            <div class="form-group" wire:ignore>
+                            <div class="form-group">
+                            
                               <label for="">Description <span class="text-danger"></span></label>
-                              <textarea id="my-editor" wire:model="description" name="content" class="form-control"></textarea>
+                              <textarea id="my-editor" wire:model="message" name="content" class="form-control">
+                              </textarea>
+                               @error('message')
+                                <span class="text-danger">{{$message}}</span>
+                                @enderror
                             
                             </div>     
-                          </form>
+                             <div class="form-group">
+                                <label for="inputProjectLeader"><i class="fas fa-paperclip"></i> Attachment</label><br>
+                                <input type="file" id="image" wire:model="photos" multiple>
+                              
+                              </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">Save changes</button>
+                          <button type="submit" class="btn btn-primary">Send Message</button>
                         </div>
+                        
                       </div>
                     </div>
+                  </form>
                   </div>
-                   
                 </div>
           
 
@@ -221,6 +249,7 @@
 </script>
 <script>
 CKEDITOR.replace('my-editor').on('change', function(e){
-@this.set('description', e.editor.getData());
+@this.set('message', e.editor.getData());
 });
 </script>
+

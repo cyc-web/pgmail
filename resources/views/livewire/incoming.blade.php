@@ -88,8 +88,8 @@
               @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
               <li class="nav-item">
                 <a href="/incoming" class="nav-link active">
-                  <i class="fas fa-file-import nav-icon"></i>
-                  <p>Incoming Request</p>
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>All Users</p>
                 </a>
               </li>
               @endif
@@ -116,11 +116,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Incoming Request</h1>
+            <h1>All Users</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"> All Messages </li>
+              <li class="breadcrumb-item"> All Users </li>
             </ol>
           </div>
         </div>
@@ -134,7 +134,7 @@
          
           <!-- /.card -->
             @if(session()->has('message'))
-            <div class="alert alert-success">
+            <div class="alert alert-success"><span class='closebtn' onclick='this.parentElement.style.display="none";'>&times;</span>
                 {{session('message')}}
             </div>
             @endif
@@ -145,50 +145,45 @@
             <div class="card-body">
 
     @if(count($users) == 0)
-                  <p style="text-align: center;">You have no message yet</p>
+                  <p style="text-align: center;">You have no user yet</p>
                   @else
   <div class="table-responsive">
             <table id="" class="table">
                 <thead>
                 <tr>
-                  <th>From </th>
-                  <th>Subject</th>
-                  <th>Status</th>
+                  <th>Name </th>
+                  <th>Unit</th>
+                  <th>Users' Status</th>
+                  <th>Image</th>
+                  <th>Account</th>
                   <th class="text-center">Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                  
                 @foreach($users as $user)
-                @if($user->status != 1)
-                 <tr style="background-color: rgb(235, 230, 230);">
+                 <tr>
                  
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->sender}}</a></td>
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{substr($user->subject, 0, 100)}}</a></td>
+                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->name}} {{$user->othername}}</a></td>
+                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->unit}}</a></td>
                   <td>
-                    @if($user->status != 2)
-                    <p class="text-success">Active</p>
+                    @if($user->role_id == 0)
+                    <p class="text-disabled">In-Active</p>
                     @else
-                    <p >Replied</p>
+                    <p class="text-green" >Active</p>
                     @endif
                   </td>
-                  <td class="text-center"><a href="/response/{{$user->id}}" title="Reply"><i class="fa fa-edit"></i></a> <i class="fa fa-edit" wire:click="edit" style="cursor: pointer;"></i></td>
-                </tr>
-                @else
-                <tr>
-                  
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none;">{{$user->sender}}</a></td>
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none;">{{substr($user->subject, 0, 100)}}</a></td>
+                  <td><img src="" alt="Profile Picture"></td>
                   <td>
-                    @if($user->status != 2)
+                    @if(empty($user->deleted_at))
                     <p class="text-success">Active</p>
                     @else
-                    <p >Replied</p>
+                    <p class="text-danger">Suspended</p>
                     @endif
                   </td>
-                  <td class="text-center"><a href="/response/{{$user->id}}" title="Reply"><i class="fa fa-edit"></i></a> </td>
+                  <td class="text-center"><a href="/edit/{{$user->id}}" title="Edit"><i class="fa fa-edit"></i></a> <i class="fa fa-trash" wire:click="remove({{$user->id}})" title="Delete" style="cursor: pointer; color:red;"></i></td>
                 </tr>
-                @endif
+               
                 @endforeach
               
                 </tbody>

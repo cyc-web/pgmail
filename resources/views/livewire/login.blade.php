@@ -15,7 +15,7 @@
                 <div class="login-form">
                     <p class="login">Login to start your session</p>
                     @if(session()->has('message'))
-            <div class="alert alert-danger" style="color: red;">
+            <div class="alert alert-danger" style="color: white;">
                 {{session('message')}}
             </div>
             @endif<hr />

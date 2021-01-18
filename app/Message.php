@@ -9,12 +9,8 @@ class Message extends Model
     //
     protected $fillable=[
         'user_id',
-        'owner',
-        'phone',
         'subject',
         'description',
-        'attachment',
-        'reply',
-        'forward'
+        'code',
     ];
 }

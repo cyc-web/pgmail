@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Attachment;
 use App\Message as AppMessage;
 use App\Recipent;
 use App\User;
@@ -9,59 +10,150 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithFileUploads;
 
 class Read extends Component
 {
-    private $results =[];
+    use WithFileUploads;
+    public $results;
     public $messageId;
-    private $messages;
-    private $user_id;
-    private $emails;
-    private $name;
-    private $othername;
-    private $status;
-    private $mstatus;
-    private $code;
-    private $attachments;
+    public $sender;
+    public $recipents;
+    public $attachments;
+    public $message;
+    public $messages;
+    public $userName;
+    public $userOtherName;
+    public $user_id;
+    public $users;
+    public $username;
+    public $oname;
+    public $subject;
+    public $code;
+    public $photos = [];
+    public $users_id = [];
+    public $status;
+    public $senderId;
+    public $mcode;
+    public $use;
+    public $uses;
+    public $rname;
+    public $roname;
+    public $person;
+
+
     
    
-    public function read($id)
+    public function reply()
     {
-        $this->messageId = $id;
+        $this->validate([
+            'message' => 'required'
+        ]);
+        $response = AppMessage::create([
+            'user_id' => auth::user()->id,
+            'subject' => $this->subject,
+            'description' => $this->message,
+            'code' => $this->code,
+
+        ]);
+        if ($response) {
+            # code...
+            $recipent = Recipent::create(['user_id'=>$this->senderId, 'message_id'=>$response->id]);
+            foreach ($this->recipents as $user) {
+                $this->users_id = $user['user_id'];
+                if ($this->users_id === auth::user()->id) {
+                    # code...
+                    
+                }else{
+                    $recipent = Recipent::create(['user_id'=>$this->users_id, 'message_id'=>$response->id]);
+                }
+                
+            }
+            if($this->photos){
+                foreach ($this->photos as $photo) {
+                    $path =date("Ymd_His") . '-' . $photo->getClientOriginalName();
+                    $photo->storeAs('public', $path);
+                    Db::table('attachments')->insert([
+                        'message_code' => $this->code,
+                        'message_id' => $response->id,
+                        'attachment' => $path
+                    ]);
+                    
+                
+                }
+            }
+            session()->flash('message', 'Message replied successfully');
+            return redirect(route('inbox'));
+
+        }else{
+            session()->flash('message', 'Unable to send message');
+        }
     }
+ 
+    
+    
     public function mount($id)
     {
-        $this->messages = Recipent::where('message_id', $id)->get();
-        foreach ($this->messages as $key => $value) {
-            # code...
-            $this->user_id = $value['user_id'];
-            $this->emails = User::where('id', $this->user_id)->get();
-            foreach ($this->emails as $value) {
-                # code...
-                $this->name = $value['name'];
-                $this->othername = $value['othername'];
-            }
-            $this->messages[$key]->rname = $this->name;
-            $this->messages[$key]->rothername = $this->othername;
-        }
-         $this->results =Db::table('users')->join('messages', 'users.id', '=', 'messages.user_id')->where('messages.id', $id)->get();
-         $this->mstatus = Recipent::where(['message_id' => $id, 'user_id' => Auth::user()->id])->first();
-         $this->status = $this->mstatus->message_status;
-         if ($this->status == 1) {
-            
-         }elseif ($this->status == 2) {
-             # code...
-         }else{
-            Recipent::where(['message_id' => $id, 'user_id' => Auth::user()->id])->update(['message_status' => 1]);
-         }
+        $this->messageId = $id;
+        $this->userName = auth::user()->name;
+        $this->userOtherName = auth::user()->othername;
 
-         $this->code = Db::table('messages')->where('id', $id)->first();
-         $this->attachments = Db::table('attachments')->where('message_code', $this->code->code)->get();
+        $this->mcode = AppMessage::where('id', $this->messageId)->first();
+        
+
+
+
+        $this->results = AppMessage::where('code', $this->mcode->code)->orderBy('id', 'desc')->get();
+        foreach ($this->results as $key => $value) {
+            $this->use = $value['user_id'];
+            $this->ids = $value['id'];
+            $this->attachments = Attachment::where('message_id', $this->ids)->orderBy('id', 'desc')->get();
+            
+            $this->uses = User::where('id', $this->use)->get();
+            foreach ($this->uses as $value) {
+                # code...
+                $this->rname = $value['name'];
+                $this->roname = $value['othername'];
+            }
+            
+
+        $this->results[$key]->rname = $this->rname;
+        $this->results[$key]->roname = $this->roname;
+        $this->results[$key]->attachments = $this->attachments;
+        }
+       
+        
          
+        $this->sender = User::where('id', $this->mcode->user_id)->first();
+        $this->recipents =Recipent::where('message_id', $this->mcode->id)->get();
+        //$this->attachments = Attachment::where('message_code', $this->mcode->code)->orderBy('id', 'desc')->get();
+        foreach ($this->recipents as $key => $value) {
+            $this->user_id = $value['user_id'];
+            $this->users = User::where('id', $this->user_id)->get();
+            foreach ($this->users as $value) {
+                # code...
+                $this->username = $value['name'];
+                $this->oname = $value['othername'];
+            }
+        
+        $this->recipents[$key]->fname = $this->username;
+        $this->recipents[$key]->oname = $this->oname;
+        }
+        $this->subject = $this->mcode->subject;
+        $this->code = $this->mcode->code;
+        $this->senderId = $this->mcode->user_id;
+        $this->status = Recipent::where(['message_id' => $this->messageId, 'user_id' => auth::user()->id])->first();
+        if ($this->status->message_status == 1) {
+            Recipent::where(['message_id' => $this->messageId, 'user_id' => auth::user()->id])->update(['message_status' => 0]);
+        }else{
+
+        }
+
+        $this->users = User::where('id', '!=', Auth::user()->id)->get();
     }
    
     public function render()
     {
-        return view('livewire.read', ['messages'=> $this->results, 'recipents'=> $this->messages, 'attachments' => $this->attachments]);
+        return view('livewire.read');
     }
 }

@@ -61,8 +61,8 @@
                @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
               <li class="nav-item">
                 <a href="/incoming" class="nav-link">
-                  <i class="fas fa-file-import nav-icon"></i>
-                  <p>Incoming Request</p>
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>All Users</p>
                 </a>
               </li>
               @endif

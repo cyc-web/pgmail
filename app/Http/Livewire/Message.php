@@ -20,9 +20,7 @@ class Message extends Component
     public $subject;
     public $description;
     public $person = [];
-    public $owner;
     public $photos;
-    public $phone;
     public $image =[];
     public $code;
     
@@ -35,8 +33,6 @@ class Message extends Component
       
         $message = AppMessage::create([
             'user_id' => Auth::user()->id,
-            'owner' => $this->owner,
-            'phone' => $this->phone,
             'subject' => $this->subject,
             'description' => $this->description
         ]);

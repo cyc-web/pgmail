@@ -1,3 +1,0 @@
-<div wire:loading wire:target="submit">
-        loading...
-    </div>

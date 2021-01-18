@@ -62,8 +62,8 @@
                @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
               <li class="nav-item">
                 <a href="/incoming" class="nav-link active">
-                  <i class="fas fa-file-import nav-icon"></i>
-                  <p>Incoming Request</p>
+                  <i class="fas fa-user-plus nav-icon"></i>
+                  <p>All Users</p>
                 </a>
               </li>
               @endif
@@ -97,7 +97,7 @@
           </div>
           <div class="col-sm-2">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item">New Chat</li>
+              <li class="breadcrumb-item">Activate</li>
             </ol>
           </div>
         </div>
@@ -108,10 +108,10 @@
     <div class="content">
       <div class="row"> 
              
-        <div class="col-md-10">
+        <div class="col-md-8">
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title"><i class="fas fa-reply"></i> Reply </h3>
+              <h3 class="card-title"><i class="fas fa-plus"></i> Activate </h3>
 
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -122,28 +122,34 @@
               
                <div class="form-group">
                 <label for="inputName">Sender <span class="text-danger"></span></label>
-                <input type="text" id="inputName" value="{{$messages->sender}}" placeholder="" class="form-control" readonly>
+                <input type="text" id="inputName" value="{{$messages->name}} {{$messages->othername}}" placeholder="" class="form-control" readonly>
                
               </div>
               <div class="form-group">
-                <label for="inputName">Subject <span class="text-danger"></span></label>
-                <input type="text" id="inputName"  value="{{$messages->subject}}" placeholder="Subject of the mail (optional)" class="form-control">
+                <label for="inputName">Unit <span class="text-danger"></span></label>
+                <input type="text" id="inputName"  value="{{$messages->unit}}" placeholder="Subject of the mail (optional)" class="form-control" readonly>
                
               </div>
               <div class="form-group" wire:ignore>
-                <label for="">Description <span class="text-danger"></span></label>
-                <textarea id="my-editor" wire:model="description" name="content" class="form-control"></textarea>
+                <label for="">Activate <span class="text-danger"></span></label>
+                <select name="" id="" wire:model="role_id" class="form-control" required>
+                <option value=""></option>
+                    <option value="2">Admin</option>
+                    <option value="3">Moderator</option>
+                    <option value="4">Users</option>
+                    <option value="activate">Re-Activate</option>
+                </select>
                
               </div>        
              
               <button type="submit" class="btn btn-success btn-block">
               <div wire:loading wire:target="addNew">
                             <i class="fas fa-spinner fa-spin"></i>
-                            Sending message...
+                            Updating user's account...
                         </div>    
                         <span wire:loading.remove>
-                        <i class="fas fa-envelope"></i>
-                          Send
+                        <i class="fas fa-user"></i>
+                          Update
                         </span>
               </button>
             </div>

@@ -6,7 +6,6 @@
                 <thead>
                 <tr>
                   <th>To</th>
-                  <th>Owner</th>
                   <th>Subject</th>
                   <th class="text-center">Actions</th>
                 </tr>
@@ -15,8 +14,7 @@
                   @foreach($messages as $user)
                 <tr>
                   <td><a href="/view/{{$user->id}}">{{$user->name}} {{$user->othername}}</a></td>
-                  <td><a href="/view/{{$user->id}}">{{$user->owner}}</a></td>
-                  <td><a href="/view/{{$user->id}}">{{$user->subject}}</a></td>
+                  <td><a href="/view/{{$user->id}}">{{substr($user->subject, 0, 200)}}</a></td>
                   <td class="text-center"><i class="fa fa-trash text-danger" wire:click='remove({{$user->id}})' style="cursor: pointer;"></i></td>
                 </tr>
               

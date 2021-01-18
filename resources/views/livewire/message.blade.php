@@ -33,7 +33,7 @@
               </div>
             </div>
             <div class="card-body">
-              <div class="form-group">
+              <!--div class="form-group">
                 <label for="inputName">Name <span class="text-danger"></span></label>
                 <input type="text" id="inputName" wire:model="owner" placeholder="Name 
                 " class="form-control">
@@ -44,7 +44,7 @@
                 <input type="text" id="inputName" wire:model="phone" placeholder="Telephone
                 " class="form-control">
               
-              </div>
+              </div-->
                <div class="form-group">
                 <label for="inputName">Subject <span class="text-danger"></span></label>
                 <input type="text" id="inputName" wire:model="subject" placeholder="Subject of the mail (optional)" class="form-control">
@@ -82,6 +82,8 @@
             @enderror
                 @if(count($users) == 0)
                 <p>No available recipents</p>
+                @elseif(Auth::user()->role_id == 0)
+                <p>Contact admin to get started</p>
                 @else
                 @foreach($users as $user)
       
