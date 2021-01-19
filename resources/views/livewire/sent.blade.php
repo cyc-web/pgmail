@@ -11,12 +11,12 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <!--div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div-->
+     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="/{{'storage/profile/'.Auth::user()->passport}}" class="brand-image img-circle elevation-3" alt="User Image">
+        </div>
         <div class="info">
-          <a href="#" class="d-block"><i class="fa fa-circle text-success"></i> {{Auth::user()->name}}</a>
+          <a href="/profile" class="d-block"><i class="fa fa-circle text-success"></i> {{Auth::user()->name}}</a>
         </div>
       </div>
 
@@ -28,13 +28,19 @@
           <li class="nav-item has-treeview menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/create" class="nav-link">
+                <a href="/profile" class="nav-link">
                   <i class="fas fa-edit nav-icon"></i>
-                  <p>Create New</p>
+                  <p>My Profile</p>
                 </a>
               </li>
             </ul>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/create" class="nav-link">
+                  <i class="fas fa-comment nav-icon"></i>
+                  <p>Create Message</p>
+                </a>
+              </li>
               <li class="nav-item">
                 <a href="/inbox" class="nav-link">
                   <i class="fas fa-comments nav-icon"></i>

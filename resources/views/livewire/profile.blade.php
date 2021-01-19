@@ -12,16 +12,7 @@
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3" wire:submit.prevent="submit">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" wire:model="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
+    
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
@@ -43,9 +34,9 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
-     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="/{{'storage/profile/'.Auth::user()->passport}}" class="brand-image img-circle elevation-3" alt="User Image">
+          <img src="/{{'storage/profile/'.$passport}}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="/profile" class="d-block"><i class="fa fa-circle text-success"></i> {{Auth::user()->name}}</a>
@@ -60,7 +51,7 @@
           <li class="nav-item has-treeview menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/profile" class="nav-link">
+                <a href="/profile" class="nav-link active">
                   <i class="fas fa-edit nav-icon"></i>
                   <p>My Profile</p>
                 </a>
@@ -73,12 +64,14 @@
                   <p>Create Message</p>
                 </a>
               </li>
+
               <li class="nav-item">
                 <a href="/inbox" class="nav-link">
                   <i class="fas fa-comments nav-icon"></i>
                   <p>Inbox</p>
                 </a>
               </li>
+
               <li class="nav-item">
                 <a href="/archives" class="nav-link">
                   <i class="fas fa-archive nav-icon"></i>
@@ -93,7 +86,7 @@
               </li>
               @if(Auth::user()->role_id == 1 || Auth::user()->role_id == 2)
               <li class="nav-item">
-                <a href="/incoming" class="nav-link active">
+                <a href="/incoming" class="nav-link">
                   <i class="fas fa-user-plus nav-icon"></i>
                   <p>All Users</p>
                 </a>
@@ -122,11 +115,11 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>All Users</h1>
+            <h1>My Profile</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"> All Users </li>
+              <li class="breadcrumb-item"> Update Profile </li>
             </ol>
           </div>
         </div>
@@ -149,55 +142,55 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-
-    @if(count($users) == 0)
-                  <p style="text-align: center;">You have no user yet</p>
-                  @else
-  <div class="table-responsive">
-            <table id="" class="table">
-                <thead>
-                <tr>
-                  <th>Name </th>
-                  <th>Unit</th>
-                  <th>Users' Status</th>
-                  <th>Image</th>
-                  <th>Account</th>
-                  <th class="text-center">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                 
-                @foreach($users as $user)
-                 <tr>
-                 
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->name}} {{$user->othername}}</a></td>
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->unit}}</a></td>
-                  <td>
-                    @if($user->role_id == 0)
-                    <p class="text-disabled">In-Active</p>
-                    @else
-                    <p class="text-green" >Active</p>
-                    @endif
-                  </td>
-                  <td><a href="/{{'storage/profile/'.$user->passport}}" target="_blank"><img src="/{{'storage/profile/'.$user->passport}}" alt="Profile Picture" height="50" width="50" class="img-circle"></a></td>
-                  <td>
-                    @if(empty($user->deleted_at))
-                    <p class="text-success">Active</p>
-                    @else
-                    <p class="text-danger">Suspended</p>
-                    @endif
-                  </td>
-                  <td class="text-center"><a href="/edit/{{$user->id}}" title="Edit"><i class="fa fa-edit"></i></a> <i class="fa fa-trash" wire:click="remove({{$user->id}})" title="Delete" style="cursor: pointer; color:red;"></i></td>
-                </tr>
-               
-                @endforeach
-              
-                </tbody>
+            
+            <form class="row g-3" wire:submit.prevent="updateUser" enctype="multipart/form-data">
+                 <div class="col-12">
+                    <label for="inputAddress" class="form-label"><i class="fas fa-tag"></i> Title</label>
+                    <select name="" wire:model.debounce.900000ms="title" id="" class="form-control">
+                        <option value="{{$user->title}}">{{$user->title}}</option>
+                        <option value="Dr">Dr</option>
+                        <option value="Prof.">Prof.</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputEmail4" class="form-label"><i class="fas fa-user"></i> Surname</label>
+                    <input type="text" class="form-control" wire:model.debounce.900000ms="surname" value="{{$user->name}}" id="inputEmail4">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputPassword4" class="form-label"><i class="fas fa-user"></i> Othernames</label>
+                    <input type="text" class="form-control" wire:model.debounce.900000ms="othername" value="{{$user->othername}}" id="inputPassword4">
+                </div>
                 
-              </table><br>
-              {{$users->links()}}
-              </div>
-                @endif            </div>
+                <div class="col-12">
+                @if($passport)
+                <a href="/{{'storage/profile/'.$passport}}" target="_blank"><img src="/{{'storage/profile/'.$passport}}" alt="image uploaded" width="150" height="150" style="border-radius: 50%;"></a>
+                @else
+                 <img src="{{asset('images/avatar.png')}}" class="img-rounded" alt="" width="150" height="150" style="border-radius: 50%;">
+                @endif
+                   
+                    
+                </div>
+
+                <div class="col-12">
+                    <label for="inputAddress" class="form-label"><i class="fas fa-image"></i> Passport</label>
+                    <input type="file" class="form-control" id="" name="" wire:model.debounce.900000ms="image">
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputCity" class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                    <input type="email" class="form-control" value="{{$user->email}}" id="inputCity" readonly>
+                </div>
+                
+                <div class="col-md-6">
+                    <label for="inputZip" class="form-label"><i class="fas fa-phone-alt"></i> Telephone</label>
+                    <input type="text" class="form-control" wire:model.debounce.900000ms="telephone" value="{{$user->telephone}}" id="inputZip">
+                </div>
+                
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+            </div>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
@@ -223,5 +216,4 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-
-
+<!-- ./wrapper -->

@@ -14,7 +14,7 @@
                             <div class="form-row">
                                 <div class="col">
                                     <label class=""><i class="fas fa-tag"></i> Title</label>
-                                    <select wire:model.debounce.50000ms="form.title" class="form-control">
+                                    <select wire:model.debounce.900000ms="form.title" class="form-control">
                                         <option></option>
                                         <option value="Mr">Mr</option>
                                         <option value="Mrs">Mrs</option>
@@ -31,14 +31,14 @@
                         <div class="form-row">
                             <div class="col">
                                 <label><i class="fas fa-user-circle"></i> Surname</label>
-                                <input type="text" wire:model.debounce.50000ms="form.name" name="name" class="form-control" placeholder="Enter your surname" aria-describedby="emailHelp" />
+                                <input type="text" wire:model.debounce.900000ms="form.name" name="name" class="form-control" placeholder="Enter your surname" aria-describedby="emailHelp" />
                                 @error('form.name')
                                     <span class="error">{{$message}}</span>
                                     @enderror
                             </div>
                             <div class="col-md-12">
                                 <label><i class="fas fa-user-plus"></i> Othernames</label>
-                                <input type="text" wire:model.debounce.50000ms="form.othername" name="othername" class="form-control" placeholder="Enter your othernames" />
+                                <input type="text" wire:model.debounce.900000ms="form.othername" name="othername" class="form-control" placeholder="Enter your othernames" />
                                 @error('form.othername')
                                     <span class="error">{{$message}}</span>
                                     @enderror
@@ -48,7 +48,7 @@
                         <div class="form-row">
                             <div class="col">
                                 <label class=""><i class="fas fa-home"></i> Unit</label>
-                                <select wire:model.debounce.50000ms="form.unit" class="form-control">
+                                <select wire:model.debounce.900000ms="form.unit" class="form-control">
                                     <option></option>
                                     <option value="Admission">Admission</option>
                                     <option value="Audit">Audit</option>
@@ -69,14 +69,14 @@
                         <div class="form-row">
                             <div class="col">
                                 <label class=""><i class="fas fa-envelope"></i> Email address </label>
-                                <input type="email" wire:model.debounce.50000ms="form.email" name="email" class="form-control" placeholder="Enter your email address" aria-describedby="emailHelp" />
+                                <input type="email" wire:model.debounce.900000ms="form.email" name="email" class="form-control" placeholder="Enter your email address" aria-describedby="emailHelp" />
                                 @error('form.email')
                                     <span class="error">{{$message}}</span>
                                     @enderror
                             </div>
                             <div class="col">
                                 <label class=""> <i class="fas fa-phone-alt"></i> Telephone</label>
-                                <input type="text" wire:model.debounce.50000ms="form.telephone" name="telephone" class="form-control" placeholder="Enter your telephone number" aria-describedby="emailHelp" />
+                                <input type="text" wire:model.debounce.900000ms="form.telephone" name="telephone" class="form-control" placeholder="Enter your telephone number" aria-describedby="emailHelp" />
                                 @error('form.telephone')
                                     <span class="error">{{$message}}</span>
                                     @enderror
@@ -86,14 +86,14 @@
                         <div class="form-row">
                             <div class="col">
                                 <label class=""><i class="fas fa-lock"></i> Password </label>
-                                <input type="password" wire:model.debounce.50000ms="form.password" name="password" placeholder="Enter your password" class="form-control" />
+                                <input type="password" wire:model.debounce.900000ms="form.password" name="password" placeholder="Enter your password" class="form-control" />
                                 @error('form.password')
                                     <span class="error">{{$message}}</span>
                                     @enderror
                             </div>
                             <div class="col">
                                 <label class=""><i class="fas fa-lock"></i> Confirm Password </label>
-                                <input type="password" name="password" wire:model.debounce.50000ms="form.password_confirmation" placeholder="Enter your password again" class="form-control" />
+                                <input type="password" name="password" wire:model.debounce.900000ms="form.password_confirmation" placeholder="Enter your password again" class="form-control" />
                             </div>
                         </div>
                    

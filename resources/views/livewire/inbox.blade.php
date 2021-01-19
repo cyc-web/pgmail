@@ -12,9 +12,9 @@
     </ul>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
+    <form class="form-inline ml-3" wire:submit.prevent="searchQuery">
       <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control form-control-navbar" type="search" wire:model="search" placeholder="Search" aria-label="Search">
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
             <i class="fas fa-search"></i>
@@ -44,11 +44,11 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <!--div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div-->
+        <div class="image">
+          <img src="/{{'storage/profile/'.Auth::user()->passport}}" class="brand-image img-circle elevation-3" alt="User Image">
+        </div>
         <div class="info">
-          <a href="#" class="d-block"><i class="fa fa-circle text-success"></i> {{Auth::user()->name}}</a>
+          <a href="/profile" class="d-block"><i class="fa fa-circle text-success"></i> {{Auth::user()->name}}</a>
         </div>
       </div>
 
@@ -60,19 +60,27 @@
           <li class="nav-item has-treeview menu-open">
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="/create" class="nav-link">
+                <a href="/profile" class="nav-link">
                   <i class="fas fa-edit nav-icon"></i>
-                  <p>Create New</p>
+                  <p>My Profile</p>
                 </a>
               </li>
             </ul>
             <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/create" class="nav-link">
+                  <i class="fas fa-comment nav-icon"></i>
+                  <p>Create Message</p>
+                </a>
+              </li>
+
               <li class="nav-item">
                 <a href="/inbox" class="nav-link active">
                   <i class="fas fa-comments nav-icon"></i>
                   <p>Inbox</p>
                 </a>
               </li>
+
               <li class="nav-item">
                 <a href="/archives" class="nav-link">
                   <i class="fas fa-archive nav-icon"></i>
@@ -143,7 +151,43 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <livewire:messages />
+              
+            @if(count($users) == 0)
+                <p style="text-align: center;">You have no message yet</p>
+            @else
+          <div class="table-responsive">
+            <table id="" class="table">
+                <thead>
+                <tr>
+                  <th>From </th>
+                  <th>Subject</th>
+                  <th class="text-center">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                 
+                @foreach($users as $user)
+                @if($user->message_status == 0)
+                 <tr style="background-color: rgb(235, 230, 230);">
+                  <td><a href="/read/{{$user->id}}" style="text-decoration: none; color:black">{{$user->name}} {{$user->othername}}</a></td>
+                  <td><a href="/read/{{$user->id}}" style="text-decoration: none; color:black">{{substr($user->subject, 0, 200)}}</a></td>
+                  <td class="text-center"><i class="fa fa-archive" wire:click='archive({{$user->id}})' style="cursor: pointer;"></i>&nbsp; &nbsp;&nbsp; &nbsp; <i class="fa fa-trash text-danger" wire:click="remove({{$user->id}})" style="cursor: pointer;"></i> </td>
+                </tr>
+                @else
+                <tr>
+                  <td><a href="/read/{{$user->id}}" style="text-decoration: none;">{{$user->name}} {{$user->othername}}</a></td>
+                  <td><a href="/read/{{$user->id}}" style="text-decoration: none;">{{substr($user->subject, 0, 200)}}</a></td>
+                  <td class="text-center"><i class="fa fa-archive" wire:click='archive({{$user->id}})' style="cursor: pointer;"></i>&nbsp; &nbsp;&nbsp; &nbsp; <i class="fa fa-trash text-danger" wire:click="remove({{$user->id}})" style="cursor: pointer;"></i> </td>
+                </tr>
+                @endif
+                @endforeach
+              
+                </tbody>
+                
+              </table>
+              {{ $users->links() }}
+              </div>
+                @endif
             </div>
             <!-- /.card-body -->
           </div>

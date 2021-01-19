@@ -146,9 +146,7 @@
                   @endforeach
                     @endif
                 <br>
-                <div class="row">
-                    <button class="btn btn-default">Forward</button>
-                </div>
+                
 
 
             </div>

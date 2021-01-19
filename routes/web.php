@@ -12,5 +12,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::livewire('/incoming', 'incoming')->name('incoming');
     Route::livewire('/show/{id}', 'show');
     Route::livewire('/edit/{id}', 'edit');
+    Route::livewire('/profile', 'profile');
 });
 
