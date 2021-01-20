@@ -53,9 +53,24 @@ class Incoming extends Component
     public function edit()
     {
     }
+    public function mount()
+    {
+        if (Auth::user()->role_id === 1) {
+         
+         $this->user = User::withTrashed()->where('id', '!=', auth::user()->id)->where('role_id', '!=', 1)->where('name', 'like', '%'.$this->search.'%')->paginate(1);
+        }else{
+            $this->user = User::withTrashed()->where('id', '!=', auth::user()->id)->where('role_id', '!=', 1)->where('unit', '=', auth::user()->unit)->where('name', 'like', '%'.$this->search.'%')->paginate(1);
+        }
+         return $this->user;
+
+    }
+    public function updatingSearch()
+    {
+        $this->resetPage();
+    }
     public function render()
     {
        
-        return view('livewire.incoming', ['users'=> User::withTrashed()->where('id', '!=', auth::user()->id)->where('role_id', '!=', 1)->paginate(2)]);
+        return view('livewire.incoming', ['users'=> $this->mount()]);
     }
 }

@@ -170,8 +170,8 @@
                 @foreach($users as $user)
                  <tr>
                  
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->name}} {{$user->othername}}</a></td>
-                  <td><a href="/show/{{$user->id}}" style="text-decoration: none; color:black">{{$user->unit}}</a></td>
+                  <td>{{$user->name}} {{$user->othername}}</td>
+                  <td>{{$user->unit}}</td>
                   <td>
                     @if($user->role_id == 0)
                     <p class="text-disabled">In-Active</p>

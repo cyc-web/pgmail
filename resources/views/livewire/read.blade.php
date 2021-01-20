@@ -123,7 +123,7 @@
                 
                 <div class="row">
                     <div class="col-md-6">
-                        <strong>From : {{$sender->name}} {{$sender->othername}} </strong>
+                        <strong>From : {{$sender}} </strong>
                     </div>
                     <div class="col-md-6" style="text-align: right;">
                         {{$mcode->created_at}} ({{ \Carbon\Carbon::parse($mcode->created_at)->diffForHumans() }})
@@ -148,10 +148,10 @@
                 <div class="row" style="padding: 10px;">
                 <div class="col-md-8">
                   {!! $result->description !!}
-                   By : @if($result->rname === $userName && $result->roname === $userOtherName)
+                   By : @if($result->sender === Auth::user()->name. ' '. Auth::user()->othername)
                    Me 
                    @else
-                   {{$result->rname}} {{$result->roname}}
+                   {{$result->sender}}
                    @endif
                    @if($result->attachments)
                    @foreach($result->attachments as $image)
