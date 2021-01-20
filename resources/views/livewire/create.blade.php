@@ -186,10 +186,11 @@
                 @error('person')
             <span class="text-danger">{{$message}}</span>
             @enderror
-                @if(count($users) == 0)
-                <p>No available recipents</p>
-                @elseif(Auth::user()->role_id == 0)
+                @if(Auth::user()->role_id == 0)
                 <p>Contact admin to get started</p>
+                
+                @elseif (count($users) == 0)
+                <p>No available recipents</p>
                 @else
                 @foreach($users as $user)
       
